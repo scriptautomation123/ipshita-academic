@@ -310,8 +310,8 @@ def moderated_mediation(df, iv, mediators, dv, moderators):
             }))
             m1 = sm.OLS(sub[m], X1).fit()
 
-            # Stage 2: M + IV → DV
-            X2 = sm.add_constant(sub[[m, iv]])
+            # Stage 2: M + IV (centred) → DV
+            X2 = sm.add_constant(pd.DataFrame({m: sub[m], iv: iv_c}))
             m2 = sm.OLS(sub[dv], X2).fit()
             b_m = m2.params[m]
 
