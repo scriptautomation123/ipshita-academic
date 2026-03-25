@@ -208,8 +208,8 @@ def moderated_sem(df, moderator_key, model_spec=None):
     mod_sd = df[mod_col].std()
 
     groups = {
-        f"Low (below −1 SD)": df[df[mod_col] <= mod_mean - mod_sd],
-        f"High (above +1 SD)": df[df[mod_col] >= mod_mean + mod_sd],
+        "Low (below -1 SD)": df[df[mod_col] <= mod_mean - mod_sd],
+        "High (above +1 SD)": df[df[mod_col] >= mod_mean + mod_sd],
     }
 
     results = {}
