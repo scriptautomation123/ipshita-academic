@@ -18,7 +18,8 @@ Analyses included
 4. Simple mediation (Baron & Kenny + Sobel test) for each mediator
 5. Moderation analysis (interaction effects)
 6. Moderated mediation (conditional indirect effects)
-7. Visualisations (correlation heat-map, path diagram sketch)
+7. Structural Equation Model (SEM) with latent variables and fit indices
+8. Visualisations (correlation heat-map, path diagram sketch)
 """
 
 import os
@@ -42,6 +43,7 @@ from analysis.data_loader import (
     get_mediator_keys,
     get_moderator_keys,
 )
+from analysis.sem_analysis import run_sem_analysis
 from config.constructs import ALL_CONSTRUCTS, get_construct_label
 
 # ---------------------------------------------------------------------------
@@ -389,6 +391,9 @@ def run_full_analysis(df):
     mm_results = moderated_mediation(df, iv_keys[0], med_keys, dv_keys[0], mod_keys)
     mm_results.to_csv(OUTPUT_DIR / "moderated_mediation_results.csv", index=False)
 
+    # 7. Structural Equation Model
+    sem_results = run_sem_analysis(df)
+
     _section("Analysis Complete")
     print(f"All results saved to {OUTPUT_DIR.resolve()}/")
     return {
@@ -398,4 +403,5 @@ def run_full_analysis(df):
         "mediation": med_results if all_med else pd.DataFrame(),
         "moderation": mod_results if all_mod else pd.DataFrame(),
         "moderated_mediation": mm_results,
+        "sem": sem_results,
     }
